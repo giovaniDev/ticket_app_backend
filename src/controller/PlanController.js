@@ -13,5 +13,16 @@ module.exports = {
         }
     },
 
-    
+    async index(req, res) {
+        try {
+            if (req.typeUser === 'company') {
+                return res.status(401).json({ error: 'Somente usuarios pode acessar esta rota' })
+            }
+            const { company_id } = req.params;
+            const data = await Plan.find({ company_id });
+            return res.json(data);
+        } catch (error) {
+            return res.json(error);
+        }
+    }
 }
