@@ -38,10 +38,20 @@ const CompanySchema = new mongoose.Schema({
     state: {
         type: String,
         required: true
+    },
+    thumbnail: {
+        type: String
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+        virtuals: true
+    }
 });
+
+CompanySchema.virtual('thumbnail_url').get(function() {
+    return `http://192.168.0.12:3000/files/${this.thumbnail}`
+})
 
 module.exports = mongoose.model('Company', CompanySchema);
 
