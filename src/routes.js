@@ -18,6 +18,7 @@ const uploadUserConfig = require('./config/uploadUserConfig');
 const uploadUser = multer(uploadUserConfig);
 
 route.post('/register/company', uploadCompany.single('thumbnail') , RegisterCompanyController.store);
+route.post('/register/user', uploadUser.single('thumbnail') , RegisterUserController.store);
 route.post('/auth', AuthUserController.store);
 route.post('/authcompany', AuthCompanyController.store);
 
