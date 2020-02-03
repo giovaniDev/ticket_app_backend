@@ -2,6 +2,7 @@ const express = require('express');
 const multer = require('multer');
 
 const RegisterUserController = require('./controller/RegisterUserController');
+const ThumbnailUserController = require('./controller/ThumbnailUserController');
 const RegisterCompanyController = require('./controller/RegisterCompanyController');
 const AuthUserController = require('./controller/AuthUserController');
 const AuthCompanyController = require('./controller/AuthCompanyController');
@@ -18,16 +19,16 @@ const uploadUserConfig = require('./config/uploadUserConfig');
 const uploadUser = multer(uploadUserConfig);
 
 route.post('/register/company', uploadCompany.single('thumbnail') , RegisterCompanyController.store);
-route.post('/register/user', uploadUser.single('thumbnail') , RegisterUserController.store);
+route.post('/register/user' , RegisterUserController.store);
+route.post('/register/user/thumbnail/:id', uploadUser.single('thumbnail') , ThumbnailUserController.store);
 route.post('/auth', AuthUserController.store);
 route.post('/authcompany', AuthCompanyController.store);
 
 const verifyToken = require('./config/verifyToken');
-route.use(verifyToken);
 
-route.get('/users', UserController.show);
-route.get('/companies', CompanyController.index)
-route.post('/companies/plans', PlanController.store)
-route.get('/companies/plans/:company_id', PlanController.index)
+route.get('/users', verifyToken, UserController.show);
+route.get('/companies', verifyToken, CompanyController.index)
+route.post('/companies/plans', verifyToken, PlanController.store)
+route.get('/companies/plans/:company_id', verifyToken, PlanController.index)
 
 module.exports = route;
