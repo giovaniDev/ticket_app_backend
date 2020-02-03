@@ -8,23 +8,22 @@ module.exports = {
         try {
             const data = req.body;
             if (data.document_id.length !== 11) {
-                return res.status(401).json({ error: 'Document lenght: 11' });
+                return res.status(200).json({ error: 'Document lenght: 11' });
             }
-            const { filename } = req.file;
             const hashDocument = await crypto.createHash('sha256').update(data.document_id).digest('hex');
             const hashPassword = await bcrypt.hash(data.password, 10);
             data.document_id = hashDocument;
             data.password = hashPassword;
-            const user = await User.create({...data, thumbnail: filename});
+            const user = await User.create(data);
             return res.json(user);
         } catch (error) {
             if (/email_1/i.test(error.errmsg)) {
-                return res.status(401).json({ error: 'Este email já esta cadastrado' });
+                return res.status(200).json({ error: 'Este email já esta cadastrado' });
             }
             if (/document_id_1/i.test(error.errmsg)) {
-                return res.status(401).json({ error: 'Este documento já esta cadastrado' });
+                return res.status(200).json({ error: 'Este documento já esta cadastrado' });
             }   
-            return res.status(401).json(error)
+            return res.status(200).json(error)
         }
     }
 }
