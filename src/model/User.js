@@ -29,7 +29,6 @@ const UserSchema = new mongoose.Schema({
     },
     thumbnail: {
         type: String,
-        required: true
     }
 }, {
     timestamps: true,
