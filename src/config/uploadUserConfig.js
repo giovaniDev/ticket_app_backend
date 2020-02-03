@@ -11,12 +11,5 @@ module.exports = {
                 const name = path.basename(file.originalname, ext)
                 cb(null, `${name}-${Date.now()}${ext}`)
         }
-    }),
-    fileFilter: (req, file, cb) => {
-        if (req.body.document_id.length !== 11) {
-            return cb(null, false);
-        } else {
-            cb(null, true)
-        }
-    }
+    })
 }
