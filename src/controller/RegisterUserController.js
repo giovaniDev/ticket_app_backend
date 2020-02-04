@@ -1,6 +1,7 @@
 const User = require('../model/User');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
+const transport = require('../config/mail');
 
 module.exports = {
 
@@ -14,7 +15,19 @@ module.exports = {
             const hashPassword = await bcrypt.hash(data.password, 10);
             data.document_id = hashDocument;
             data.password = hashPassword;
+            data.secure = Math.round(Math.random() * 10000);
+            
             const user = await User.create(data);
+            if (user) {
+                await transport.sendMail({
+                    from: '"Pool Up Service" <giovani.rdgs@gmail.com>', // sender address
+                    to: `${user.email}`, // list of receivers
+                    subject: "Seu código de segurança", // Subject line
+                    html: `<h1>Seja Bem Vindo ao Pool Up ${user.name} </h1>
+                            <p>Seu código de segurança é: ${data.secure}<p/>` // html body
+                })
+            }
+            user.secure = undefined;
             return res.json(user);
         } catch (error) {
             if (/email_1/i.test(error.errmsg)) {
