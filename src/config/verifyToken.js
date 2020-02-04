@@ -21,6 +21,10 @@ module.exports = (req, res, next) => {
         }
         req.userId = decode.id;
         req.typeUser = decode.typeUser
+        req.active = decode.active
+        if (req.active === false) {
+            return res.status(400).json({error: 'Voce nao tem permissao'})
+        }
         return next();
     })
 }
