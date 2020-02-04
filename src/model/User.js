@@ -27,6 +27,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    secure: {
+        type: String
+    },
+    active: {
+        type: Boolean,
+        default: false
+    },
     thumbnail: {
         type: String,
     }
