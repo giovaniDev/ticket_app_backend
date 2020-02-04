@@ -9,6 +9,7 @@ const AuthCompanyController = require('./controller/AuthCompanyController');
 const UserController = require('./controller/UserController');
 const CompanyController = require('./controller/CompanyController');
 const PlanController = require('./controller/PlanController');
+const SetUserActive = require('./controller/SetUserActive');
 
 const route = express.Router();
 
@@ -20,6 +21,7 @@ const uploadUser = multer(uploadUserConfig);
 
 route.post('/register/company', uploadCompany.single('thumbnail') , RegisterCompanyController.store);
 route.post('/register/user' , RegisterUserController.store);
+route.post('/register/user/active/:id/:secure' , SetUserActive.store);
 route.post('/register/user/thumbnail/:id', uploadUser.single('thumbnail') , ThumbnailUserController.store);
 route.post('/auth', AuthUserController.store);
 route.post('/authcompany', AuthCompanyController.store);
