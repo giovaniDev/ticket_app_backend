@@ -14,8 +14,11 @@ module.exports = {
             if (!await bcrypt.compare(password, user.password) ) {
                 return res.status(200).json({ error: 'Bad Password' });
             }
+            if (user.active === false) {
+                return res.status(200).json({ error: 'User not active' });
+            }
             user.password = undefined;
-            const token = await jwt.sign({ id: user.id, typeUser: 'user' }, process.env.SECRET);
+            const token = await jwt.sign({ id: user.id, typeUser: 'user', active: user.active }, process.env.SECRET);
             return res.status(200).json({user, token})
         } catch (error) {
             res.status(200).json(error)
