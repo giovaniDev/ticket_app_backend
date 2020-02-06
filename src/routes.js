@@ -10,6 +10,7 @@ const UserController = require('./controller/UserController');
 const CompanyController = require('./controller/CompanyController');
 const PlanController = require('./controller/PlanController');
 const SetUserActive = require('./controller/SetUserActive');
+const CardDigitalCardController = require('./controller/CardDigitalCardController')
 
 const route = express.Router();
 
@@ -28,7 +29,10 @@ route.post('/authcompany', AuthCompanyController.store);
 
 const verifyToken = require('./config/verifyToken');
 
-route.get('/users', verifyToken, UserController.show);
+route.use(verifyToken);
+
+route.get('/users', UserController.show);
+route.post('/cards', CardDigitalCardController.store);
 route.get('/companies', verifyToken, CompanyController.index)
 route.post('/companies/plans', verifyToken, PlanController.store)
 route.get('/companies/plans/:company_id', verifyToken, PlanController.index)
